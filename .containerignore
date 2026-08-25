@@ -1,0 +1,6 @@
+# The Pro attach config contains a subscription token. It is supplied to
+# Buildah with --secret and must not be included in the build context.
+pro-attach-config.toml
+
+.git
+.jj

@@ -1,0 +1,27 @@
+# Ubuntu's FIPS image recipe is based on Ubuntu Focal. The attach config is
+# mounted only for this RUN instruction and is not copied into the image.
+FROM ubuntu:focal
+
+RUN --mount=type=secret,id=pro-attach-config \
+    set -eux; \
+    apt-get update; \
+    apt-get install --no-install-recommends -y \
+        ca-certificates \
+        ubuntu-pro-client; \
+    pro attach --attach-config /run/secrets/pro-attach-config; \
+    apt-get upgrade -y; \
+    apt-get install --no-install-recommends -y \
+        libgcrypt20 \
+        libgcrypt20-hmac \
+        libssl1.1 \
+        libssl1.1-hmac \
+        openssh-client \
+        openssh-server \
+        openssl \
+        strongswan \
+        strongswan-hmac; \
+    pro detach --assume-yes; \
+    apt-get purge --auto-remove -y \
+        ca-certificates \
+        ubuntu-pro-client; \
+    rm -rf /var/lib/apt/lists/*
