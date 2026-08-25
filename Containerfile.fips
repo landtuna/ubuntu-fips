@@ -1,6 +1,6 @@
-# Ubuntu's FIPS image recipe is based on Ubuntu Focal. The attach config is
-# mounted only for this RUN instruction and is not copied into the image.
-FROM ubuntu:focal
+# Build a Noble-based FIPS image. The attach config is mounted only for this
+# RUN instruction and is not copied into the image.
+FROM ubuntu:noble
 
 RUN --mount=type=secret,id=pro-attach-config \
     set -eux; \
@@ -12,14 +12,12 @@ RUN --mount=type=secret,id=pro-attach-config \
     apt-get upgrade -y; \
     apt-get install --no-install-recommends -y \
         libgcrypt20 \
-        libgcrypt20-hmac \
-        libssl1.1 \
-        libssl1.1-hmac \
         openssh-client \
         openssh-server \
+        openssh-sftp-server \
         openssl \
-        strongswan \
-        strongswan-hmac; \
+        openssl-fips-module-3 \
+        strongswan; \
     pro detach --assume-yes; \
     apt-get purge --auto-remove -y \
         ca-certificates \

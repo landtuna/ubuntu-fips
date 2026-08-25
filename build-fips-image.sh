@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 set -Eeuo pipefail
 
-# Build the Ubuntu Focal FIPS image using the local Ubuntu Pro attach config.
+# Build the Ubuntu Noble FIPS image using the local Ubuntu Pro attach config.
 # The attach config is passed to Buildah as a secret and is never copied into
 # the image.
 
-IMAGE_TAG="${IMAGE_TAG:-ubuntu-focal-fips}"
+IMAGE_TAG="${IMAGE_TAG:-ubuntu-noble-fips}"
 SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 CONTAINERFILE="${CONTAINERFILE:-$SCRIPT_DIR/Containerfile.fips}"
 CONTEXT_DIR="${CONTEXT_DIR:-$SCRIPT_DIR}"
@@ -21,7 +21,7 @@ Context: $CONTEXT_DIR
 Attach config: ${PRO_ATTACH_CONFIG:-$SCRIPT_DIR/pro-attach-config.toml}
 
 Overrides:
-  IMAGE_TAG=registry.example/ubuntu-focal-fips bash $0
+  IMAGE_TAG=registry.example/ubuntu-noble-fips bash $0
   PRO_ATTACH_CONFIG=/path/to/config.yaml bash $0
   CONTAINERFILE=/path/to/Containerfile bash $0
   CONTEXT_DIR=/path/to/context bash $0
