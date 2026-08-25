@@ -1,0 +1,6 @@
+# Ubuntu Pro attach configuration for the Noble FIPS image build.
+# Replace the placeholder with a token from https://ubuntu.com/pro/dashboard.
+# Keep this file private after adding the token.
+token: REPLACE_WITH_UBUNTU_PRO_TOKEN
+enable_services:
+  - fips-updates
