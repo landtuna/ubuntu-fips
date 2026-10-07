@@ -173,6 +173,32 @@ Use the current [Ubuntu FIPS documentation](https://documentation.ubuntu.com/sec
 to confirm the certification status and package requirements for the release
 and compliance target you need.
 
+## Python 3.14 image
+
+`Containerfile.python3.14.fips` adds Python 3.14 to `ubuntu-noble-fips`:
+
+```bash
+podman build -f Containerfile.python3.14.fips -t python314-fips .
+```
+
+The managed interpreter is installed under `/opt/python`, with a virtual
+environment at `/opt/venv` and uv at `/usr/local/bin`. These paths are root-owned
+and readable/executable by other users. The image defaults to the non-root
+`user` account, but Python also works with arbitrary runtime UIDs. This allows
+rootless Podman `--userns=keep-id` to write host bind mounts as the host owner
+without requiring that owner's UID to match the image's account.
+
+After building, check Python access using the host UID and a different UID:
+
+```bash
+podman run --rm --userns=keep-id python314-fips -S -c 'import sys; print(sys.version)'
+podman run --rm --user 12345:12345 python314-fips -S -c 'import sys; print(sys.version)'
+```
+
+Moving the installation does not establish FIPS compliance for the uv-downloaded
+Python build or its cryptographic libraries. Validate these separately against
+your compliance requirements.
+
 ## Build ordinary images
 
 The VM can also be used as a general rootless Podman/Buildah builder:
